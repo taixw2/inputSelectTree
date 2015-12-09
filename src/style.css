@@ -1,0 +1,60 @@
+ul,li{
+	list-style: none
+}
+.treeNode{
+	display: block;
+
+}
+.treeNode .tree-status{
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	vertical-align: middle;
+	cursor: pointer;
+}
+.treeNode .tree-ext{
+	background: url(images/metro.png) -109px -85px no-repeat;
+}
+.treeNode .tree-shut{
+	background: url(images/metro.png) -130px -85px no-repeat;
+}
+
+.treeNode ul{
+	padding-left: 20px;
+}
+.treeNode .tree-title,
+.treeNode .tree-ico{
+	display: inline-block;
+	vertical-align: middle;
+	height: 20px;
+}
+.treeNode .tree-ico{
+	width: 20px;
+}
+.treeNode .tree-ext-folder{	
+	background: url(images/metro.png) -150px -22px no-repeat;
+}
+
+.list-child .tree-status{
+	background: none;
+	cursor: default;
+}
+.tree-shut-folder,
+.list-child .tree-ext-folder{
+	background: url(images/metro.png) -150px -0px no-repeat;
+}
+.list-wrap{
+	margin-bottom:0px;
+}
+.treeNode .tree-title{
+	cursor: pointer;
+}
+.treeNode .tree-title:hover{
+	text-decoration: underline;
+}
+.treeNode .tree-title:active{
+	color:#999;
+}
+
+
+

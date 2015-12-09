@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="../bower_components/bootstrap/dist/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="../src/style.css">
+	<!-- bower:css -->
+	<!-- endbower -->
+</head>
+<body>	
+	<input type="text" name="tree" value="" placeholder="">
+	<!-- bower:js -->
+	<script src="../bower_components/jquery/dist/jquery.js"></script>
+	<script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+	<script src="../bower_components/mockjs/dist/mock.js"></script>
+	<!-- endbower -->
+	<script src="../src/inputSelectTree.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		var template = {
+			data:[{
+				"flowId": "@GUID",
+				"parentId": "-1",
+				"areaName": "@REGION",
+				"areaAbbreviation": "@REGION",
+				"areaCode": "510000",
+				"children|10": [{
+					"flowId": "@GUID",
+					"parentId": "@GUID",
+					"areaName": "@REGION",
+					"areaAbbreviation": "@REGION",
+					"areaCode": "510000",
+					"children|6-20": [{
+						"flowId": "@GUID",
+						"parentId": "@GUID",
+						"areaName": "@REGION",
+						"areaAbbreviation": "@REGION",
+						"areaCode": "510000",
+						"parentAreaName": "无",
+						"id": "@GUID",
+						"text": "@REGION"
+					}],
+					"parentAreaName": "无",
+					"id": "@GUID",
+					"text": "@REGION"
+				}],
+				"parentAreaName": "无",
+				"id": "@GUID",
+				"text": "@REGION"
+			}]
+		}
+		var demoDate = Mock.mock(/nodeDemo\.json/,template);
+		$("[name=tree]").inputSelectTree({
+			api:"nodeDemo.json",
+			triggerHandler:function(){
+				
+			}
+		});
+
+	</script>
+</body>
+</html>

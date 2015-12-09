@@ -1,0 +1,29 @@
+{
+  "name": "inputselecttree",
+  "description": "一款选择下拉树的Jquery插件",
+  "main": "inputSelectTree.js",
+  "authors": [
+    "欧阳鑫"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "jquery",
+    "tree",
+    "selector"
+  ],
+  "homepage": "https://github.com/taixw2/clover",
+  "moduleType": [],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "bootstrap": "~3.3.6",
+    "mockjs": "~0.1.10"
+  }
+}
