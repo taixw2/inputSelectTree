@@ -50,9 +50,26 @@
 				"text": "@REGION"
 			}]
 		}
-		var demoDate = Mock.mock(/nodeDemo\.json/,template);
+		var template2 = {
+			"data|100":[{
+				"flowId": "@GUID",
+				"parentId": "-1",
+				"areaName": "@REGION",
+				"areaAbbreviation": "@REGION",
+				"areaCode": "510000",
+				"parentAreaName": "无",
+				"id": "@GUID",
+				"text": "@REGION"
+			}]
+		}
+
+		Mock.mock(/nodeDemo\.json/,template);
+		Mock.mock(/rightDemo\.json/,template2);
 		$("[name=tree]").inputSelectTree({
 			api:"nodeDemo.json",
+			// apiRight:"rightDemo.json",
+			// width:"120px",
+			// height:"300px",
 			triggerHandler:function(){
 				
 			}

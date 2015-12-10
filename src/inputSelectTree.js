@@ -4,8 +4,11 @@
 		_this.setting = {
 			target:"",
 			api:"",
+			apiRight:"",
 			idkey:"flowId",
 			triggerHandler:function(){},
+			width:0,
+			height:0,
 			data:[]
 		}
 		_this.extend(_this.setting,options);
@@ -56,13 +59,16 @@
 			var _this = this,
 			target    = _this.get("target"),
 			id = _this.get("idkey"),
-			isLast = "",
+			width = _this.get("width"),
+			height = _this.get("height"),
+			isLast = "",	
+			apiRight = _this.get("apiRight"),	
 			treeNodeData = {};
 			//构建树
 			//递归子集
 			function _bulidTree(data){
-				var domHtml = "";
-				
+				var domHtml = "",templet = "";
+				templet = "<li><div class='treeNode @isLast' GuId='@Nodeid'><span class='tree-status tree-ext'></span><span class='tree-ico tree-ext-folder'></span><span class='tree-title'>@data</span>@childHtml</div></li>";
 				if (data.length <= 0) {return ""}
 				domHtml += "<ul class='list-group list-wrap'>"
 				for (var i = 0; i < data.length; i++) {
@@ -76,23 +82,85 @@
 					}else{
 						isLast = " list-child"
 					};
-					treeNodeData["tree_"+ Nodeid] = data[i];
-					domHtml += "<li><div class='treeNode"+isLast+"' id='tree_"+Nodeid+"'>"+
-						"<span class='tree-status tree-ext'></span>"+
-						"<span class='tree-ico tree-ext-folder'></span>"+
-						"<span class='tree-title'>"+data[i]['text']+"</span>"+childHtml+ 
-					"</div></li>";
+					treeNodeData[Nodeid] = data[i];
+					//isLast
+					//Nodeid
+					//data[i]['text']
+					//childHtml
+					domHtml += templet.split("@isLast").join(isLast)
+					.split("@Nodeid").join(Nodeid)
+					.split("@data").join(data[i]['text'])
+					.split("@childHtml").join(childHtml);
 				};
 				domHtml += "</ul>";
 				return domHtml;
-			}			
+			}
 			target.after('<input name="treeHideData" type="hidden" /><div class="inputTree hide">'+_bulidTree(data)+'</div>');
+			var treeWrap = target.nextAll('div.inputTree');
+			var targetLeft = target.offset().left;
+			var targetTop = target.offset().top + target.height() + 6;
+			if (width && height) {
+				treeWrap.css({
+					height: height,
+					width: width,
+				});
+			};
+
+			treeWrap.css({
+				left: targetLeft,
+				top: targetTop
+			});		
+
+			if (apiRight) {
+				treeWrap.after("<div class='selectRight hide'></div>");
+				var selRit = treeWrap.next();
+				if (width && height) {
+					selRit.css({
+						height: height,
+						width: width - 30
+					});
+				};
+				selRit.css({
+					left: targetLeft + treeWrap.width(),
+					top: targetTop
+				});	
+			};			
+			
 			target.data({nodeDate:treeNodeData});
+		},
+		bulidRight:function(apiRight,thisNodeData){
+			var _this = this,
+			target = _this.get("target"),
+			id = _this.get("idkey"),
+			wrap = target.nextAll(".inputTree"),
+			wrapReg = wrap.next();
+			wrapReg.removeClass('hide');		
+			$.ajax({
+				url: apiRight,
+				type: 'post',
+				data:{
+					flowId:thisNodeData[id]
+				},
+				dataType: 'json',
+				success:function(data){
+					var myData = data.data;
+					var myStr = "";
+					myStr = "<div  class='list-group'>"
+					for (var i = 0; i < myData.length; i++) {
+						myStr += "<a title='"+myData[i].text+"' class='list-group-item right-title' guid='"+myData[i][id]+"'>"+myData[i].text+"</a>"
+					};
+					myStr += "</div >";
+					wrapReg.html(myStr);
+				}
+			});
 		},
 		addEvent:function(){
 			var _this = this,
 			target = _this.get("target"),
-			wrap = target.nextAll(".inputTree");
+			id = _this.get("idkey"),
+			wrap = target.nextAll(".inputTree"),
+			wrapReg = wrap.next();
+			var apiRight     = _this.get("apiRight");
 			wrap.on('click', '.tree-status', function(event) {
 				event.preventDefault();
 				/* Act on the event */
@@ -121,13 +189,27 @@
 			}).on('click', '.tree-title', function(event) {
 				event.preventDefault();
 				/* Act on the event */
-				var $this = $(this);
-				var thisNodeId = $this.closest(".treeNode").attr('id');
-				var data = target.data().nodeDate;
-				var thisNodeData = data[thisNodeId]
-				target.val($this.text());
+				var $this        = $(this);
+				var thisNodeId   = $this.closest(".treeNode").attr('Guid');
+				var data         = target.data().nodeDate;
+				var thisNodeData = data[thisNodeId];
+				
+				_this.get("triggerHandler")(thisNodeData);
+				if (apiRight) {
+					_this.bulidRight(apiRight,thisNodeData);
+				}else{
+					wrap.addClass('hide');
+					target.val($this.text());
+				}
+			});
+			wrapReg.on('click', '.right-title', function(event) {
+				event.preventDefault();
+				/* Act on the event */
+				var $this        = $(this);
 				wrap.addClass('hide');
-				_this.get("triggerHandler")(thisNodeData,data);
+				wrapReg.addClass('hide');
+				target.val($this.text());
+				
 			});
 			target.on('focus', function(event) {
 				event.preventDefault();

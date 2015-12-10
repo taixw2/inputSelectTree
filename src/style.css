@@ -56,5 +56,28 @@ ul,li{
 	color:#999;
 }
 
-
-
+.inputTree,
+.selectRight{
+	overflow: hidden;
+	overflow-y:auto;
+	width:174px;
+	height:300px;
+	border:1px solid #ccc;
+	position: fixed;
+}
+.selectRight{
+	width: 144px;
+}
+.selectRight a{
+	padding:2px;
+	padding-left: 10px;
+	cursor: pointer;
+	width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	height: 26px;
+}
+.inputTree>.list-group{
+	width:1000px;
+}
