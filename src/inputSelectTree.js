@@ -18,10 +18,10 @@
 	}
 	InputSelectTree.prototype = {
 		constructor:InputSelectTree,
-		set:function(key,val){
+		setter:function(key,val){
 			this.setting[key] = val;
 		},
-		get:function(key){
+		getter:function(key){
 			return this.setting[key]
 		},
 		extend:function(a,b){
@@ -34,12 +34,12 @@
 		},
 		initData:function(){
 			var _this = this;
-			if (this.get("data").length >= 1) {
+			if (this.getter("data").length >= 1) {
 				// this.get("data");
-				this.bulid(this.get("data"))
+				this.bulid(this.getter("data"))
 			} else{
 				$.ajax({
-					url: this.get("api"),
+					url: this.getter("api"),
 					type: 'post',
 					dataType: 'json',
 					success:function(data){
@@ -57,12 +57,12 @@
 		},
 		bulid:function(data){
 			var _this = this,
-			target    = _this.get("target"),
-			id = _this.get("idkey"),
-			width = _this.get("width"),
-			height = _this.get("height"),
+			target    = _this.getter("target"),
+			id = _this.getter("idkey"),
+			width = _this.getter("width"),
+			height = _this.getter("height"),
 			isLast = "",	
-			apiRight = _this.get("apiRight"),	
+			apiRight = _this.getter("apiRight"),	
 			treeNodeData = {};
 			//构建树
 			//递归子集
@@ -130,8 +130,8 @@
 		},
 		bulidRight:function(apiRight,thisNodeData){
 			var _this = this,
-			target = _this.get("target"),
-			id = _this.get("idkey"),
+			target = _this.getter("target"),
+			id = _this.getter("idkey"),
 			wrap = target.nextAll(".inputTree"),
 			wrapReg = wrap.next();
 			wrapReg.removeClass('hide');		
@@ -156,11 +156,11 @@
 		},
 		addEvent:function(){
 			var _this = this,
-			target = _this.get("target"),
-			id = _this.get("idkey"),
+			target = _this.getter("target"),
+			id = _this.getter("idkey"),
 			wrap = target.nextAll(".inputTree"),
 			wrapReg = wrap.next();
-			var apiRight     = _this.get("apiRight");
+			var apiRight     = _this.getter("apiRight");
 			wrap.on('click', '.tree-status', function(event) {
 				event.preventDefault();
 				/* Act on the event */
@@ -194,7 +194,7 @@
 				var data         = target.data().nodeDate;
 				var thisNodeData = data[thisNodeId];
 				
-				_this.get("triggerHandler")(thisNodeData);
+				_this.getter("triggerHandler")(thisNodeData);
 				if (apiRight) {
 					_this.bulidRight(apiRight,thisNodeData);
 				}else{
